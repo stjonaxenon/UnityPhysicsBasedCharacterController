@@ -14,7 +14,7 @@ public class PhyBasedCharController : MonoBehaviour
     [field: SerializeField] public float RideSpringStrength = 1000.0f  ;
     [field: SerializeField] public float RideSpringDamper = 100.0f ;
     [field: SerializeField] public float JumpingForce = 200.0f ;
-    [field: SerializeField] public float moveForce = 1.0f ;
+    [field: SerializeField] public float moveForce = 3000.0f ;
     [field: SerializeField] public float centreOfMassOffsetY = 0.0f ;
     [field: SerializeField] public float uprightJointSpringStrength = 1000.0f  ;
     [field: SerializeField] public float uprightJointSpringDamper = 100.0f ;
@@ -68,6 +68,20 @@ public class PhyBasedCharController : MonoBehaviour
         
         //Rotate
         UpdateUprightForce();
+        UpdateFacingDirection();
+        
+        Move();
+        
+    }
+
+    private void UpdateFacingDirection()
+    {
+        if (_RB.velocity.magnitude < 1.0f) {return;}
+        Vector3 forwardDir = _RB.velocity.normalized;
+        Debug.DrawLine(transform.position, transform.position + forwardDir * 100, Color.magenta);
+        Quaternion targetRotation = Quaternion.LookRotation(forwardDir);
+        transform.rotation = new Quaternion(transform.rotation.x, targetRotation.y, transform.rotation.z, transform.rotation.w);
+        Debug.Log(targetRotation.y);
     }
 
     private void UpdateUprightForce()
@@ -122,13 +136,19 @@ public class PhyBasedCharController : MonoBehaviour
        _RB.AddForce(transform.up * JumpingForce);
     }
 
+    
+    //这个函数是临时的，
+    //TODO: 增加阻尼，保证松开按键后角色会自动停止。修正角色运动方向，目前是前进时延x轴运动，右是延z轴运动。修改为根据相机朝向运动。
     private void Move()
     {
         if (InputReader.MovementValue == Vector2.zero)
         {
             return;
         }
-        Vector3 move = Vector3.Normalize(InputReader.MovementValue) * moveForce;
+        
+        Vector2 inputMoveDir = InputReader.MovementValue.normalized;
+        Vector3 moveDir = new Vector3(inputMoveDir.x, 0, inputMoveDir.y);
+        Vector3 move = moveDir * moveForce * Time.deltaTime;
         _RB.AddForce(move); 
     }
 }

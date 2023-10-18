@@ -35,4 +35,9 @@ public class InputReader : MonoBehaviour, InputControls.IPlayerActions
         if (!context.performed) { return; }
         JumpEvent?.Invoke();
     }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        
+    }
 }

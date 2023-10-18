@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &107288773 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 411195304641763958, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
+  m_PrefabInstance: {fileID: 1273722871}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafc8473c3a13ef48af8dca163cf86fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +333,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5605495914418488284, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
+      propertyPath: moveForce
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5605495914418488284, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
       propertyPath: RideSpringDamper
       value: 100
       objectReference: {fileID: 0}
@@ -331,12 +346,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5605495914418488284, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
       propertyPath: rayCastMaxDistance
-      value: 200
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5605495914418488284, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
       propertyPath: centreOfMassOffsetY
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5605495914418488284, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
+      propertyPath: <InputReader>k__BackingField
+      value: 
+      objectReference: {fileID: 107288773}
     - target: {fileID: 5924919825185858586, guid: bd8dbc8aee3fae04a9cc6fdae58145e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
