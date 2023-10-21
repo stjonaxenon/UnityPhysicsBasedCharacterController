@@ -43,7 +43,7 @@ public class PhyBasedCharController : MonoBehaviour
 
     private Rigidbody _RB;
     private Vector3 _COM; // Centre of Mass.
-    private Vector3 m_GoalVel;
+    //private Vector3 m_GoalVel;
     private Vector3 groundVel; // ray cast 后当前地面的移动速度
     
     void Start()
@@ -55,7 +55,8 @@ public class PhyBasedCharController : MonoBehaviour
         _RB.centerOfMass = _COM;
         CentreOfMassSphere.transform.position = transform.TransformPoint(_COM);
         
-        m_GoalVel = Vector3.zero;
+        //
+        //m_GoalVel = Vector3.zero;
         
         InputReader.JumpEvent += OnJump;
         
@@ -182,14 +183,12 @@ public class PhyBasedCharController : MonoBehaviour
     //TODO: 增加阻尼，保证松开按键后角色会自动停止。修正角色运动方向，目前是前进时延x轴运动，右是延z轴运动。修改为根据相机朝向运动。
     private void Move()
     {
-        // if (InputReader.MovementValue == Vector2.zero)
-        // {
-        //     return;
-        // }
+        Vector2 inputMoveDir = Vector2.zero;
+        if (InputReader.MovementValue.magnitude > 0.01)
+        {
+            inputMoveDir = InputReader.MovementValue.normalized;
+        }
         
-        Vector2 inputMoveDir = InputReader.MovementValue.normalized;
-        
-
         Vector3 cameraForward = Camera.main.transform.forward;
         Vector3 cameraRight = Camera.main.transform.right;
 
@@ -200,16 +199,17 @@ public class PhyBasedCharController : MonoBehaviour
         cameraRight.Normalize();
         
         Vector3 move = inputMoveDir.y * cameraForward + inputMoveDir.x * cameraRight;
-        if (move.magnitude > 1.0f)
-        {
-            move.Normalize();
-        }
+
+        move.Normalize();
+     
 
         // WSAD键盘信息转化为在3D世界中的单位向量。
         Vector3 m_UnitGoal = move;
         
-        Debug.DrawLine(transform.position, transform.position + m_UnitGoal * 10, Color.magenta, 1.0f);
-        
+       // Debug.DrawLine(transform.position, transform.position + m_UnitGoal * 10, Color.magenta, 2.0f);
+
+       Vector3 m_GoalVel = _RB.velocity;
+       
         // 计算 新的 goal vel
         Vector3 unitVel = m_GoalVel.normalized;
 
