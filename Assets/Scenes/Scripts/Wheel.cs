@@ -12,7 +12,9 @@ public class Wheel : MonoBehaviour
     [field: SerializeField] public float RideSpringDamper = 100.0f ;
 
     [field: SerializeField, Header("LOCOMOTION")]
-    public float tractionForce = 1000.0f; 
+    public float tractionForce = 1000.0f;
+
+    [field: SerializeField] private bool isSuspensionWheel;
     [field: SerializeField] public float tractionForceDamper = 100.0f;
     [field: SerializeField] public bool isTurnWheel;
     [SerializeField] private float frictionFactor;
@@ -34,9 +36,6 @@ public class Wheel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-
 
     }
 
@@ -44,7 +43,7 @@ public class Wheel : MonoBehaviour
     {
         Vector3 finalForce = Vector3.zero;
         
-        if (Physics.SphereCast(transform.position,0.15f,
+        if (Physics.SphereCast(transform.position,0.10f,
                  -transform.up,out RaycastHit hit, rayCastMaxDistance) && VehicleRB)
         {
 
@@ -91,6 +90,9 @@ public class Wheel : MonoBehaviour
 
     private Vector3 GetForwardForce()
     {
+        if (isSuspensionWheel) {return Vector3.zero;}
+        if (InputMoveDir.magnitude ==0) {return Vector3.zero;}
+        
         //Debug.Log(transform.forward * VehicleRB.velocity.magnitude * tractionForceDamper);
         Vector3 forwardForce = transform.forward * Mathf.Round(InputMoveDir.y)  * tractionForce -
                                transform.forward * VehicleRB.velocity.magnitude * tractionForceDamper;
@@ -99,6 +101,8 @@ public class Wheel : MonoBehaviour
 
     private Vector3 GetFriction()
     {
+        if (isSuspensionWheel) {return Vector3.zero;}
+        
         float slipSpeed = Vector3.Dot(VehicleRB.GetPointVelocity(transform.position), transform.right);
         Vector3 slipVel = transform.right * slipSpeed;
         //if (slipVel.magnitude < 0.001f) {return Vector3.zero;}
